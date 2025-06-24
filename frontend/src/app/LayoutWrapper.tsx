@@ -1,6 +1,6 @@
 "use client";
 
-import BookLoader from "@/lib/BookLoader";
+import BookLoader from "@/constant/BookLoader";
 import { persistor, store } from "@/store/store";
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
