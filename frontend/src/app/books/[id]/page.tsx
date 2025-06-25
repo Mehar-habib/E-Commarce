@@ -1,8 +1,17 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
-import { Heart, Loader2, ShoppingCart } from "lucide-react";
+import {
+  CheckCircle2,
+  Heart,
+  Loader2,
+  MapPin,
+  MessageCircle,
+  ShoppingCart,
+  User2,
+} from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
@@ -38,7 +47,7 @@ export default function Page() {
       upiId: "example@upi",
     },
     createdAt: new Date("2024-01-01"),
-    seller: { name: "John Doe", contact: "1234567890" },
+    seller: { name: "John Doe", phoneNumber: "1234567890" },
   };
   const handleAddToCart = (productId: string) => {};
   const handleAddToWishlist = (productId: string) => {};
@@ -155,8 +164,101 @@ export default function Page() {
                   </>
                 )}
               </Button>
+
+              <Card className="border border-gray-200 shadow-sm">
+                <CardHeader>
+                  <CardTitle className="text-lg">Book Details</CardTitle>
+                </CardHeader>
+                <CardContent className="grid gap-4">
+                  <div className="grid grid-cols-2 gap-4 text-sm">
+                    <div className="font-medium text-muted-foreground">
+                      Subject/Title
+                    </div>
+                    <div>{book.subject}</div>
+                    <div className="font-medium text-muted-foreground">
+                      Course
+                    </div>
+                    <div>{book.classType}</div>
+                    <div className="font-medium text-muted-foreground">
+                      Category
+                    </div>
+                    <div>{book.category}</div>
+                    <div className="font-medium text-muted-foreground">
+                      Author
+                    </div>
+                    <div>{book.author}</div>
+                    <div className="font-medium text-muted-foreground">
+                      Edition
+                    </div>
+                    <div>{book.edition}</div>
+                    <div className="font-medium text-muted-foreground">
+                      Condition
+                    </div>
+                    <div>{book.condition}</div>
+                  </div>
+                </CardContent>
+              </Card>
             </div>
           </div>
+        </div>
+
+        <div className="mt-8 grid gap-8 md:grid-cols-2">
+          <Card className="border-none shadow-md">
+            <CardHeader>
+              <CardTitle className="text-lg">Description</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <p>{book.description}</p>
+              <div className="border-t pt-4">
+                <h3 className="font-medium mb-2">Our Community</h3>
+                <p className="text-muted-foreground">
+                  we&apos;re not just another shopping website where you buy
+                  from professional sellers - we are a vibrant community of
+                  students, book lovers across Pakistan who deliver happiness to
+                  each other!
+                </p>
+              </div>
+              <div className="flex items-center gap-4 text-sm text-muted-foreground">
+                <div>Ad Id: {book._id}</div>
+                <div>Posted: {formatDate(book.createdAt)}</div>
+              </div>
+            </CardContent>
+          </Card>
+
+          {/* book seller details */}
+          <Card className="border-none shadow-md">
+            <CardHeader>
+              <CardTitle className="text-lg">Sold By</CardTitle>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-3">
+                  <div className="h-12 w-12 rounded-full bg-blue-300 flex items-center justify-center">
+                    <User2 className="h-6 w-6 text-blue-500" />
+                  </div>
+                  <div>
+                    <div className="flex items-center gap-2">
+                      <span className="font-medium">{book.seller.name}</span>
+                      <Badge variant="secondary" className="text-green-600">
+                        <CheckCircle2 className="h-3 w-3 ml-1" />
+                        Verified
+                      </Badge>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-muted-foreground">
+                      <MapPin className="h-4 w-4" />
+                      Lahore
+                    </div>
+                  </div>
+                </div>
+              </div>
+              {book.seller.phoneNumber && (
+                <div className="flex items-center gap-2 text-sm">
+                  <MessageCircle className="h-4 w-4 text-blue-600" />
+                  <span>Contact: {book.seller.phoneNumber}</span>
+                </div>
+              )}
+            </CardContent>
+          </Card>
         </div>
       </div>
     </div>
