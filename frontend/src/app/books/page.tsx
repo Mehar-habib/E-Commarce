@@ -27,6 +27,7 @@ import Image from "next/image";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
+import Pagination from "../components/Pagination";
 
 export default function Page() {
   // State for pagination
@@ -304,6 +305,11 @@ export default function Page() {
                     </motion.div>
                   ))}
                 </div>
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={handlePageChange}
+                />
               </>
             ) : (
               <></>
