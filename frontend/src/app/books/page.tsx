@@ -28,11 +28,13 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Heart } from "lucide-react";
 import Pagination from "../components/Pagination";
+import { useRouter } from "next/navigation";
+import NoData from "../components/NoData";
 
 export default function Page() {
   // State for pagination
   const [currentPage, setCurrentPage] = useState(1);
-
+  const router = useRouter();
   // State for filter selections
   const [selectedCondition, setSelectedCondition] = useState<string[]>([]); // Book condition filter
   const [selectedCategory, setSelectedCategory] = useState<string[]>([]); // Book category filter
@@ -312,7 +314,13 @@ export default function Page() {
                 />
               </>
             ) : (
-              <></>
+              <NoData
+                imageUrl="/images/no-book.jpg"
+                message="No Books available please try later"
+                description="Try adjusting your filters or search  criteria to find what you're looking for"
+                onClick={() => router.push("/book-sell")}
+                buttonText="Sell Your FirstBook"
+              />
             )}
           </div>
         </div>
