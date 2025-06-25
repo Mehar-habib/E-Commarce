@@ -29,7 +29,7 @@ export const blogPosts = [
   },
   {
     imageSrc:
-      "https://media.istockphoto.com/id/910384920/photo/kid-reading-near-locked-door.webp?a=1&b=1&s=612x612",
+      "https://images.unsplash.com/photo-1604744591996-8caa3e71ee05?q=80&w=1631&auto=format&fit=crop&q=60",
     title: "What to do with old books?",
     description:
       "Learn about different ways to make use of your old books and get value from them.",
