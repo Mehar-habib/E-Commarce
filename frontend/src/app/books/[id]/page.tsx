@@ -1,7 +1,13 @@
 "use client";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { formatDistanceToNow } from "date-fns";
 import {
   CheckCircle2,
@@ -260,6 +266,55 @@ export default function Page() {
             </CardContent>
           </Card>
         </div>
+
+        {/* how it works session */}
+        <section className="mt-16">
+          <h2 className="mb-8 text-2xl font-bold">How Does It Work</h2>
+          <div className="grid gap-8 md:grid-cols-3">
+            {[
+              {
+                step: "Step 1",
+                title: "Seller posts an Ad",
+                description:
+                  "Seller posts an ad on book kart to sell their used books.",
+                image: { src: "/icons/ads.png", alt: "Post Ad" },
+              },
+              {
+                step: "Step 2",
+                title: "Buyer Pays Online",
+                description:
+                  "Buyer makes an online payment to book kart to buy those books.",
+                image: { src: "/icons/pay_online.png", alt: "Payment" },
+              },
+              {
+                step: "Step 3",
+                title: "Seller ships the books",
+                description: "Seller then ships the books to the buyer",
+                image: { src: "/icons/fast-delivery.png", alt: "Shipping" },
+              },
+            ].map((item, index) => (
+              <Card
+                key={index}
+                className="bg-gradient-to-br from-amber-50 to-amber-100 border-none"
+              >
+                <CardHeader>
+                  <Badge className="w-fit mb-2">{item.step}</Badge>
+                  <CardTitle className="text-lg">{item.title}</CardTitle>
+                  <CardDescription>{item.description}</CardDescription>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  <Image
+                    src={item.image.src}
+                    alt={item.image.alt}
+                    width={120}
+                    height={120}
+                    className="mx-auto"
+                  />
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </section>
       </div>
     </div>
   );
