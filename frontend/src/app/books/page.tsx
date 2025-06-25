@@ -1,7 +1,15 @@
 "use client"; // Marks this as a Client Component in Next.js
 
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+import { Checkbox } from "@/components/ui/checkbox";
 // Import book data from constants
-import { books } from "@/constant/BookData";
+import { books, filters } from "@/constant/BookData";
+import Link from "next/link";
 // React hooks for state management
 import { useState } from "react";
 
@@ -102,5 +110,64 @@ export default function Page() {
     }
   });
 
-  return <div>Books</div>;
+  return (
+    <div className="min-h-screen bg-gray-100">
+      <div className="container mx-auto px-4 py-8">
+        <nav className="mb-8 flex items-center gap-2 text-sm text-muted-foreground">
+          <Link href="/" className="text-primary hover:underline">
+            Home
+          </Link>
+          <span>/</span>
+          <span>Books</span>
+        </nav>
+        <h1 className="mb-8 text-3xl font-bold">
+          Find from over 1000s of used books online
+        </h1>
+        <div className="grid gap-8 md:grid-cols-[280px_1fr]">
+          <div className="space-y-6">
+            <Accordion
+              type="multiple"
+              className="bg-white p-6 border rounded-lg"
+            >
+              {Object.entries(filters).map(([key, values]) => (
+                <AccordionItem key={key} value={key}>
+                  <AccordionTrigger className="text-lg font-semibold text-blue-500">
+                    {key.charAt(0).toUpperCase() + key.slice(1)}
+                  </AccordionTrigger>
+                  <AccordionContent>
+                    <div className="mt-2 space-y-2">
+                      {values.map((value) => (
+                        <div
+                          key={value}
+                          className="flex items-center space-x-2"
+                        >
+                          <Checkbox
+                            id={value}
+                            checked={
+                              key === "condition"
+                                ? selectedCondition.includes(value)
+                                : key === "classType"
+                                ? selectedType.includes(value)
+                                : selectedCategory.includes(value)
+                            }
+                            onCheckedChange={() => toggleFilter(key, value)}
+                          />
+                          <label
+                            htmlFor={value}
+                            className="font-medium text-sm leading-none"
+                          >
+                            {value}
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              ))}
+            </Accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
 }
