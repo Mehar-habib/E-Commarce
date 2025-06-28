@@ -45,6 +45,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import AuthPage from "./AuthPage";
 
 export default function Header() {
   // State for dropdown visibility
@@ -62,8 +63,8 @@ export default function Header() {
   // Mock user data (would typically come from Redux/store)
   const user = {
     profilePicture: "",
-    name: "Habib ur Rehman",
-    email: "abc@gmail.com",
+    name: "",
+    email: "",
   };
   const userPlaceholder = "";
 
@@ -119,6 +120,12 @@ export default function Header() {
           },
         ]),
 
+    // development purpose to views the auth page
+    {
+      icon: <Lock className="h-5 w-5" />,
+      label: "Login/Signup",
+      onClick: handleLoginClick,
+    },
     // Common menu items
     {
       icon: <User className="h-5 w-5" />,
@@ -365,6 +372,7 @@ export default function Header() {
           </div>
         </Link>
       </div>
+      <AuthPage isLoginOpen={isLoginOpen} setIsLoginOpen={handleLoginClick} />
     </header>
   );
 }
