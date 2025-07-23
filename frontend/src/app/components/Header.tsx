@@ -266,7 +266,7 @@ export default function Header() {
           {/* User Account Dropdown */}
           <DropdownMenu open={isDropdownOpen} onOpenChange={setIsDropdownOpen}>
             <DropdownMenuTrigger asChild>
-              <Button variant="ghost">
+              <Button className="bg-gray-100 hover:bg-gray-200 text-black cursor-pointer">
                 <Avatar className="w-8 h-8 rounded-full">
                   {user?.profilePicture ? (
                     <AvatarImage alt="user_image"></AvatarImage>
@@ -287,7 +287,7 @@ export default function Header() {
           {/* Cart Button with Badge */}
           <Link href="/checkout/cart">
             <div className="relative">
-              <Button variant="ghost" className="relative">
+              <Button className="relative bg-gray-100 hover:bg-gray-200 text-black cursor-pointer">
                 <ShoppingCart className="h-5 w-5 mr-2" />
                 Cart
               </Button>

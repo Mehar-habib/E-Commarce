@@ -16,27 +16,23 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function NewBooks() {
-  // State for current slide index
   const [currentSlide, setCurrentSlide] = useState(0);
 
-  // Auto-rotate slides every 5 seconds
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentSlide((prev) => (prev + 1) % 3); // Cycle through 3 slides
+      setCurrentSlide((prev) => (prev + 1) % 3);
     }, 5000);
-    return () => clearInterval(timer); // Cleanup on unmount
+    return () => clearInterval(timer);
   }, []);
 
-  // Navigation handlers
   const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + 3) % 3); // Previous slide with wrap-around
+    setCurrentSlide((prev) => (prev - 1 + 3) % 3);
   };
 
   const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % 3); // Next slide with wrap-around
+    setCurrentSlide((prev) => (prev + 1) % 3);
   };
 
-  // Calculate discount percentage
   const calculateDiscount = (price: number, finalPrice: number): number => {
     if (price > finalPrice && price > 0) {
       return Math.round(((price - finalPrice) / price) * 100);
@@ -47,7 +43,6 @@ export default function NewBooks() {
   return (
     <section className="py-16 bg-gray-50">
       <div className="container mx-auto px-4">
-        {/* Section Title */}
         <h2 className="text-3xl font-bold text-center mb-12">
           Newly Added Books
         </h2>
@@ -55,33 +50,35 @@ export default function NewBooks() {
         <div className="relative">
           {books.length > 0 ? (
             <>
-              {/* Book Carousel */}
               <div className="overflow-hidden">
                 <div
                   className="flex transition-transform duration-500 ease-in-out"
                   style={{ transform: `translateX(-${currentSlide * 100}%)` }}
                 >
-                  {/* Render 3 slides (each containing 3 books) */}
                   {[0, 1, 2].map((slideIndex) => (
                     <div key={slideIndex} className="flex-none w-full">
                       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                        {/* Display 3 books per slide */}
                         {books
                           .slice(slideIndex * 3, slideIndex * 3 + 3)
                           .map((book) => (
                             <Card key={book._id} className="relative">
                               <CardContent className="p-4">
                                 <Link href={`books/${book._id}`}>
-                                  {/* Book Image with Discount Badge */}
                                   <div className="relative">
-                                    <Image
-                                      src={book.images[0]}
-                                      alt={book.title}
-                                      width={200}
-                                      height={300}
-                                      className="mb-4 h-[200px] w-full object-cover rounded-md"
-                                    />
-                                    {/* Show discount badge if applicable */}
+                                    {book.images[0] ? (
+                                      <Image
+                                        src={book.images[0]}
+                                        alt={book.title}
+                                        width={200}
+                                        height={300}
+                                        className="mb-4 h-[200px] w-full object-cover rounded-md"
+                                      />
+                                    ) : (
+                                      <div className="mb-4 h-[200px] w-full bg-gray-200 rounded-md flex items-center justify-center text-sm text-gray-500">
+                                        No Image
+                                      </div>
+                                    )}
+
                                     {calculateDiscount(
                                       book.price,
                                       book.finalPrice
@@ -90,18 +87,16 @@ export default function NewBooks() {
                                         {calculateDiscount(
                                           book.price,
                                           book.finalPrice
-                                        )}{" "}
+                                        )}
                                         % Off
                                       </span>
                                     )}
                                   </div>
 
-                                  {/* Book Title */}
                                   <h3 className="mb-2 line-clamp-2 text-sm font-medium">
                                     {book.title}
                                   </h3>
 
-                                  {/* Price and Condition */}
                                   <div className="flex items-center justify-between">
                                     <div className="flex items-baseline gap-2">
                                       <span className="text-lg font-bold">
@@ -118,7 +113,6 @@ export default function NewBooks() {
                                     </div>
                                   </div>
 
-                                  {/* Buy Now Button */}
                                   <div className="pt-4">
                                     <Button className="flex float-end mb-2 bg-gradient-to-r from-orange-500 to-orange-600 text-white hover:from-orange-600 hover:to-orange-700">
                                       Buy Now
@@ -134,7 +128,6 @@ export default function NewBooks() {
                 </div>
               </div>
 
-              {/* Navigation Arrows */}
               <button
                 className="absolute left-0 top-1/2 -translate-y-1/2 bg-white p-2 rounded-full shadow-md"
                 onClick={prevSlide}
@@ -150,7 +143,6 @@ export default function NewBooks() {
                 <ChevronRight className="w-6 h-6" />
               </button>
 
-              {/* Slide Indicators */}
               <div className="mt-8 flex justify-center space-x-2">
                 {[0, 1, 2].map((dot) => (
                   <button
@@ -165,7 +157,6 @@ export default function NewBooks() {
               </div>
             </>
           ) : (
-            // Empty State
             <p className="text-center text-gray-500">No Books to display</p>
           )}
         </div>
