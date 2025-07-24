@@ -102,9 +102,11 @@ userSchema.pre("save", async function (next) {
 });
 
 // Custom method to compare a plain-text password with the hashed one in DB
-userSchema.methods.comparePassword = async function (password: string) {
-  const isMatch = await bcrypt.compare(password, this.password!);
-  return isMatch;
+userSchema.methods.comparePassword = async function (
+  this: IUSER,
+  password: string
+): Promise<boolean> {
+  return bcrypt.compare(password, this.password!);
 };
 
 // Export the User model, using the IUSER interface for type safety
