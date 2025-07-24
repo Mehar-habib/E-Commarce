@@ -1,0 +1,13 @@
+Purpose of verifyEmail
+Verify the user's email using the verificationToken.
+Set isVerified = true and delete the token.
+Automatically log in the user after verification by generating a JWT and saving it in a cookie.
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+Purpose of login
+Authenticate the user by email and password.
+Ensure email is verified before login.
+Generate a token and store it securely in a cookie.
+Respond with user info (excluding sensitive data).
+
+//////////////////////////////////////////////////////////////////////////////////////////////////////
