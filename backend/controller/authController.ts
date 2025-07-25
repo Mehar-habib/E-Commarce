@@ -175,3 +175,26 @@ export const logout = async (req: Request, res: Response) => {
     return response(res, 500, "Something went wrong");
   }
 };
+
+export const checkUserAuth = async (req: Request, res: Response) => {
+  try {
+    const userId = req?.id;
+    if (!userId) {
+      return response(
+        res,
+        401,
+        "Unauthenticated please login to access our data"
+      );
+    }
+    const user = await User.findById(userId).select(
+      "-password -verificationToken -resetPasswordToken -resetPasswordExpire"
+    );
+    if (!user) {
+      return response(res, 401, "User not found");
+    }
+    return response(res, 200, "User retrieved successfully", user);
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, "Something went wrong");
+  }
+};
