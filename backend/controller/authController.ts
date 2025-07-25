@@ -163,3 +163,15 @@ export const resetPassword = async (req: Request, res: Response) => {
     return response(res, 500, "Something went wrong");
   }
 };
+
+export const logout = async (req: Request, res: Response) => {
+  try {
+    res.clearCookie("access_token", {
+      httpOnly: true,
+    });
+    return response(res, 200, "Logout successful");
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, "Something went wrong");
+  }
+};
