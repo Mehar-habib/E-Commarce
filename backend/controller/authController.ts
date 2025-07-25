@@ -2,7 +2,10 @@ import { Request, Response } from "express";
 import User from "../models/User";
 import { response } from "../utils/responsiveHandler";
 import crypto from "crypto";
-import { sendVerificationToEmail } from "../config/emailConfig";
+import {
+  sendResetPasswordLinkToEmail,
+  sendVerificationToEmail,
+} from "../config/emailConfig";
 import { generateToken } from "../utils/generateToken";
 
 export const register = async (req: Request, res: Response) => {
@@ -66,6 +69,8 @@ export const verifyEmail = async (req: Request, res: Response) => {
 
     // Save updated user to database
     await user.save();
+
+    return response(res, 200, "Email verified successfully");
   } catch (error) {
     console.log(error);
     return response(res, 500, "Something went wrong");
@@ -106,6 +111,53 @@ export const login = async (req: Request, res: Response) => {
     return response(res, 200, "Login successful", {
       user: { name: user.name, email: user.email },
     });
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, "Something went wrong");
+  }
+};
+
+export const forgotPassword = async (req: Request, res: Response) => {
+  try {
+    const { email } = req.body;
+    const user = await User.findOne({ email: email });
+    if (!user) {
+      return response(res, 400, "No user found with this email");
+    }
+
+    const resetPasswordToken = crypto.randomBytes(20).toString("hex");
+    user.resetPasswordToken = resetPasswordToken;
+    user.resetPasswordExpire = new Date(Date.now() + 3600);
+
+    await user.save();
+    await sendResetPasswordLinkToEmail(user.email, resetPasswordToken);
+
+    return response(res, 200, "Reset password link sent to your email");
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, "Something went wrong");
+  }
+};
+
+export const resetPassword = async (req: Request, res: Response) => {
+  try {
+    const token = req.params;
+    const { newPassword } = req.body;
+    const user = await User.findOne({
+      resetPasswordToken: token,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
+
+    if (!user) {
+      return response(res, 400, "Invalid or expired token");
+    }
+    user.password = newPassword;
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+
+    await user.save();
+
+    return response(res, 200, "Password reset successful");
   } catch (error) {
     console.log(error);
     return response(res, 500, "Something went wrong");
