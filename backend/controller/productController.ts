@@ -91,3 +91,102 @@ export const createProduct = async (req: Request, res: Response) => {
     return response(res, 500, "Something went wrong");
   }
 };
+
+// Controller: Fetch all products from the database
+export const getAllProducts = async (req: Request, res: Response) => {
+  try {
+    // Fetch products and sort them by most recently created, then populate seller info
+    const products = await Products.find()
+      .sort({ createdAt: -1 })
+      .populate("seller", "name email"); // Only fetch name and email of seller
+
+    // Send success response with product list
+    return response(res, 200, "Products retrieved successfully", products);
+  } catch (error) {
+    console.log(error);
+    // Send internal server error if something goes wrong
+    return response(res, 500, "Something went wrong");
+  }
+};
+
+// Controller: Get a single product by its MongoDB _id
+export const getProductById = async (req: Request, res: Response) => {
+  try {
+    // Find product by ID and deeply populate seller's details along with addresses
+    const product = await Products.findById(req.params.id).populate({
+      path: "seller",
+      select: "name email profilePicture phoneNumber addresses",
+      populate: {
+        path: "addresses",
+        model: "Address",
+      },
+    });
+
+    // If product not found, return 404
+    if (!product) {
+      return response(res, 404, "Product not found");
+    }
+
+    // Send product in response
+    return response(res, 200, "Product retrieved successfully", product);
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, "Something went wrong");
+  }
+};
+
+// Controller: Delete a product by its ID
+export const deleteProduct = async (req: Request, res: Response) => {
+  try {
+    // Find and delete the product by ID
+    const product = await Products.findByIdAndDelete(req.params.productId);
+
+    // If product not found, return 404
+    if (!product) {
+      return response(res, 404, "Product not found");
+    }
+
+    // Send success response
+    return response(res, 200, "Product deleted successfully");
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, "Something went wrong");
+  }
+};
+
+// Controller: Get all products created by a specific seller
+export const getProductBySellerId = async (req: Request, res: Response) => {
+  try {
+    const sellerId = req.params.sellerId;
+
+    // Validate if seller ID is provided
+    if (!sellerId) {
+      return response(
+        res,
+        404,
+        "Seller not found please provide a valid seller id"
+      );
+    }
+
+    // Find all products where seller field matches the provided sellerId
+    const products = await Products.find({ seller: sellerId })
+      .sort({ createdAt: -1 })
+      .populate("seller", "name email profilePicture phoneNumber addresses");
+
+    // If no products found, return 404
+    if (!products) {
+      return response(res, 404, "Product not found for this seller");
+    }
+
+    // Send products list in response
+    return response(
+      res,
+      200,
+      "Product fetched by sellerId successfully",
+      products
+    );
+  } catch (error) {
+    console.log(error);
+    return response(res, 500, "Something went wrong");
+  }
+};
