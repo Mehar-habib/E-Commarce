@@ -6,6 +6,7 @@ import cookieParser from "cookie-parser";
 import { dbConnect } from "./config/dbConnect";
 import authRouter from "./routes/authRouter";
 import productRoutes from "./routes/productRoute";
+import cartRoutes from "./routes/cartRoute";
 
 dotenv.config();
 const PORT = process.env.PORT || 8080;
@@ -25,6 +26,7 @@ dbConnect();
 // api endpoints
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRoutes);
+app.use("/api/cart", cartRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
