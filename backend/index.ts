@@ -7,6 +7,7 @@ import { dbConnect } from "./config/dbConnect";
 import authRouter from "./routes/authRouter";
 import productRoutes from "./routes/productRoute";
 import cartRoutes from "./routes/cartRoute";
+import wishListRoutes from "./routes/wishListRoute";
 
 dotenv.config();
 const PORT = process.env.PORT || 8080;
@@ -27,6 +28,7 @@ dbConnect();
 app.use("/api/auth", authRouter);
 app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
+app.use("/api/wishlist", wishListRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);

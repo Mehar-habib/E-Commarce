@@ -17,9 +17,9 @@ export const addCart = async (req: Request, res: Response) => {
     }
 
     // Optionally prevent user from adding their own product (commented)
-    // if (product.seller.toString() === userId) {
-    //   return response(res, 400, "You can't add your own product to cart");
-    // }
+    if (product.seller.toString() === userId) {
+      return response(res, 400, "You can't add your own product to cart");
+    }
 
     // Find user's existing cart or create new one
     let cart = await CartItems.findOne({ user: userId });
