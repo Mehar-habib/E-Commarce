@@ -11,3 +11,36 @@ Generate a token and store it securely in a cookie.
 Respond with user info (excluding sensitive data).
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+✅ How This Works Step-by-Step
+User clicks "Login with Google" on frontend.
+
+User is redirected to:
+
+bash
+Copy
+Edit
+GET /auth/google
+This sends the user to Google's login screen via Passport.
+
+After login, Google redirects user to your backend:
+
+bash
+Copy
+Edit
+GET /auth/google/callback
+Passport uses the token from Google to get user data and either:
+
+Logs the user in
+
+Creates a new user if not already registered
+
+The backend sends a JWT token in a cookie and redirects the user back to your frontend with the session.
+
+✅ What You Need to Set in .env
+env
+Copy
+Edit
+GOOGLE_CLIENT_ID=your_google_client_id
+GOOGLE_CLIENT_SECRET=your_google_client_secret
+GOOGLE_CALLBACK_URL=http://localhost:5000/auth/google/callback
+FRONTEND_URL=http://localhost:3000
