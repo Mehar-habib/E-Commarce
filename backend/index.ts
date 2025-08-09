@@ -9,6 +9,7 @@ import productRoutes from "./routes/productRoute";
 import cartRoutes from "./routes/cartRoute";
 import wishListRoutes from "./routes/wishListRoute";
 import addressRoutes from "./routes/addressRoute";
+import userRoutes from "./routes/userRoute";
 
 dotenv.config();
 const PORT = process.env.PORT || 8080;
@@ -31,6 +32,7 @@ app.use("/api/product", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/wishlist", wishListRoutes);
 app.use("/api/user/address", addressRoutes);
+app.use("/api/user", userRoutes);
 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
